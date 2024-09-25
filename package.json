@@ -1,0 +1,14 @@
+{
+  "name": "com.artmine15.utils.toolkit",
+  "version": "1.0.0",
+  "displayName": "Toolkit",
+  "keywords": [
+    "Timer",
+    "Chance",
+    "QuickDebug"
+  ],
+  "author": {
+    "name": "Artmine15"
+  },
+  "description": "Toolkit for Unity."
+}
