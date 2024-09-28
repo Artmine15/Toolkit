@@ -8,5 +8,10 @@ namespace Artmine15.Utils.Toolkit.Components
         {
             SceneManager.LoadScene(buildIndex);
         }
+
+        public static void ReloadScene(int buildIndex)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }
