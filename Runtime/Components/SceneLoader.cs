@@ -1,7 +1,6 @@
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Artmine15.YGMusicBouncyBlock
+namespace Artmine15.Utils.Toolkit.Components
 {
     public class SceneLoader
     {
