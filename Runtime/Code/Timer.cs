@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Artmine15.Utils.Toolkit.Code
 {
-    public enum TimerType { None, Common, Coroutine, Repeatable };
+    public enum TimerType { None, Common, Coroutine, Repeatable, Stopped };
 
     public class Timer
     {
@@ -65,7 +66,7 @@ namespace Artmine15.Utils.Toolkit.Code
             }
             else
             {
-                throw new Exception("Repeatable timer is already running. To set a new value use SetRepeatableTimer()");
+                throw new Exception("Repeatable timer is already running. To set a new value use RepeatRepeatableTimer()");
             }
         }
 
@@ -93,13 +94,18 @@ namespace Artmine15.Utils.Toolkit.Code
         {
             if(_currentTimerType == TimerType.Repeatable)
                 _mainTimer = _timerTime;
+            else if(_currentTimerType == TimerType.Stopped)
+                _currentTimerType = TimerType.None;
             else
-                throw new Exception("SetRepeatableTimer() invokes not in the repeatable timer");
+                throw new Exception("RepeatRepeatableTimer() invokes not in the repeatable timer");
         }
 
         public void StopTimer()
         {
-            _currentTimerType = TimerType.None;
+            if(_currentTimerType == TimerType.Repeatable)
+                _currentTimerType = TimerType.Stopped;
+            else
+                _currentTimerType = TimerType.None;
             _mainTimer = 0;
         }
 
