@@ -39,7 +39,7 @@ namespace Artmine15.Utils.Toolkit.Code
                     {
                         OnRepeatableTimerEnded?.Invoke();
                         OnTimerEnded?.Invoke();
-                        StartRepeatableTimer();
+                        RepeatRepeatableTimer();
                     }
                     break;
                 default:
@@ -89,7 +89,7 @@ namespace Artmine15.Utils.Toolkit.Code
                 throw new Exception("CoroutineTimer can be started via StartCoroutine(StartCoroutineTimer())");
         }
 
-        public void SetRepeatableTimer()
+        public void RepeatRepeatableTimer()
         {
             if(_currentTimerType == TimerType.Repeatable)
                 _mainTimer = _timerTime;

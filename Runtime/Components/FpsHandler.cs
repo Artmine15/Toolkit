@@ -13,6 +13,8 @@ namespace Artmine15.Utils.Toolkit.Components
         private FpsHandlerEncapsulation _handlerEncapsulation;
         [DisableIf(nameof(_handlerEncapsulation), FpsHandlerEncapsulation.EditedByExternalClass)]
         [SerializeField, Range(-1, 999)] private int _defaultFps = 60;
+        [ReadOnly]
+        [SerializeField] private int _currentFps;
 
         private void Awake()
         {
@@ -43,19 +45,22 @@ namespace Artmine15.Utils.Toolkit.Components
 
         public void SetTargetFps(int fps)
         {
-            Application.targetFrameRate = fps;
+            _currentFps = fps;
+            Application.targetFrameRate = _currentFps;
             _handlerEncapsulation = FpsHandlerEncapsulation.EditedByExternalClass;
         }
 
         private void SetDefaultTargetFps()
         {
-            Application.targetFrameRate = _defaultFps;
+            _currentFps = _defaultFps;
+            Application.targetFrameRate = _currentFps;
             _handlerEncapsulation = FpsHandlerEncapsulation.ControlledByHandler;
         }
 
         private void SetRefreshRateBasedTargetFps()
         {
-            Application.targetFrameRate = (int)Screen.currentResolution.refreshRateRatio.value;
+            _currentFps = (int)Screen.currentResolution.refreshRateRatio.value;
+            Application.targetFrameRate = _currentFps;
             _handlerEncapsulation = FpsHandlerEncapsulation.ControlledByHandler;
         }
 
