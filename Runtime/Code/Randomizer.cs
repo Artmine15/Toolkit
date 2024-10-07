@@ -4,9 +4,9 @@ namespace Artmine15.Utils.Toolkit.Code
 {
     public static class Randomizer
     {
-        public static bool IsTrueWithChanceOf(int percent, int maxChance = 100)
+        public static bool IsTrueWithChanceOf(float percent, float maxChance = 100)
         {
-            int num = Random.Range(0, maxChance + 1);
+            float num = Random.Range(0, maxChance);
             if (num <= percent)
                 return true;
             else
