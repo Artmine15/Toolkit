@@ -12,9 +12,9 @@ namespace Artmine15.Utils.Toolkit.Code
         private float _mainTimer;
 
         public event Action OnTimerEnded;
-        public event Action OnCommonTimerEnded;
-        public event Action OnRepeatableTimerEnded;
-        public event Action OnCoroutineTimerEnded;
+        //public event Action OnCommonTimerEnded;
+        //public event Action OnRepeatableTimerEnded;
+        //public event Action OnCoroutineTimerEnded;
 
         private TimerType _currentTimerType;
 
@@ -22,27 +22,21 @@ namespace Artmine15.Utils.Toolkit.Code
         {
             switch (_currentTimerType)
             {
-                case TimerType.None:
-                    return;
                 case TimerType.Common:
                     if (_mainTimer <= 0)
                     {
                         StopTimer();
                         OnTimerEnded?.Invoke();
-                        OnCommonTimerEnded?.Invoke();
+                        //OnCommonTimerEnded?.Invoke();
                     }
-                    break;
-                case TimerType.Coroutine:
                     break;
                 case TimerType.Repeatable:
                     if (_mainTimer <= 0)
                     {
-                        OnRepeatableTimerEnded?.Invoke();
+                        //OnRepeatableTimerEnded?.Invoke();
                         OnTimerEnded?.Invoke();
                         RepeatRepeatableTimer();
                     }
-                    break;
-                default:
                     break;
             }
 
@@ -73,7 +67,7 @@ namespace Artmine15.Utils.Toolkit.Code
         {
             _currentTimerType = TimerType.Coroutine;
             yield return new WaitForSeconds(seconds);
-            OnCoroutineTimerEnded?.Invoke();
+            //OnCoroutineTimerEnded?.Invoke();
             OnTimerEnded?.Invoke();
             yield break;
         }
@@ -81,22 +75,31 @@ namespace Artmine15.Utils.Toolkit.Code
         public void StartTimer(float seconds, TimerType type)
         {
             _timerTime = seconds;
-            if (type == TimerType.Common)
-                StartCommonTimer();
-            else if (type == TimerType.Repeatable)
-                StartRepeatableTimer();
-            else if (type == TimerType.Coroutine)
-                throw new Exception("CoroutineTimer can be started via StartCoroutine(StartCoroutineTimer())");
+            switch (type)
+            {
+                case TimerType.Common:
+                    StartCommonTimer();
+                    break;
+                case TimerType.Coroutine:
+                    throw new Exception("CoroutineTimer can be started only via StartCoroutine(StartCoroutineTimer())");
+                case TimerType.Repeatable:
+                    StartRepeatableTimer();
+                    break;
+            }
         }
 
         public void RepeatRepeatableTimer()
         {
-            if(_currentTimerType == TimerType.Repeatable)
-                _mainTimer = _timerTime;
-            else if(_currentTimerType == TimerType.Stopped)
-                _currentTimerType = TimerType.None;
-            else
-                throw new Exception("RepeatRepeatableTimer() invokes not in the repeatable timer");
+            switch (_currentTimerType)
+            {
+                case TimerType.Repeatable:
+                    _mainTimer = _timerTime;
+                    return;
+                case TimerType.Stopped:
+                    _currentTimerType = TimerType.None;
+                    return;
+            }
+            throw new Exception("RepeatRepeatableTimer() invokes not in the repeatable timer");
         }
 
         public void StopTimer()
