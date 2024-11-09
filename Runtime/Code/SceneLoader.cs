@@ -1,6 +1,6 @@
 using UnityEngine.SceneManagement;
 
-namespace Artmine15.Utils.Toolkit.Components
+namespace Artmine15.Utils.Toolkit.Code
 {
     public static class SceneLoader
     {

@@ -1,13 +1,11 @@
 using TriInspector;
+using Artmine15.Utils.Toolkit.Enums;
 using UnityEngine;
 
 namespace Artmine15.Utils.Toolkit.Components
 {
     public class FpsHandler : MonoBehaviour
     {
-        public enum FpsHandlerMode { Manual, ScreenRefreshRate }
-        public enum FpsHandlerEncapsulation { ControlledByHandler, EditedByExternalClass }
-
         [DisableIf(nameof(_handlerEncapsulation), FpsHandlerEncapsulation.EditedByExternalClass)]
         [SerializeField] private FpsHandlerMode _handlerMode;
         private FpsHandlerEncapsulation _handlerEncapsulation;
