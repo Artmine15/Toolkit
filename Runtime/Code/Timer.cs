@@ -82,6 +82,7 @@ namespace Artmine15.Utils.Toolkit.Code
                     StartRepeatableTimer();
                     break;
             }
+            _currentTimerState = TimerState.Active;
         }
 
         public void RepeatRepeatableTimer()
