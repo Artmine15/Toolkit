@@ -85,6 +85,16 @@ namespace Artmine15.Utils.Toolkit.Code
             _currentTimerState = TimerState.Active;
         }
 
+        public void PauseTimer()
+        {
+            _currentTimerState = TimerState.Stopped;
+        }
+
+        public void ResumeTimer()
+        {
+            _currentTimerState = TimerState.Active;
+        }
+
         public void RepeatRepeatableTimer()
         {
             if (_currentTimerType != TimerType.Repeatable) throw new Exception("RepeatRepeatableTimer() invokes not in the repeatable timer");
