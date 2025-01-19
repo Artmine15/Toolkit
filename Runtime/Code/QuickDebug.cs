@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Artmine15.Utils.Toolkit.Code
+namespace Artmine15.Packages.Utils.Toolkit.Code
 {
     public static class QuickDebug
     {
@@ -26,16 +26,6 @@ namespace Artmine15.Utils.Toolkit.Code
                     log += $", ";
             }
             Debug.Log(log);
-        }
-
-        public static void VectorLog(string label, Vector2 vector2)
-        {
-            Debug.Log($"{label}: x:{vector2.x}, y:{vector2.y}");
-        }
-
-        public static void VectorLog(string label, Vector3 vector3)
-        {
-            Debug.Log($"{label}: x:{vector3.x}, y:{vector3.y}, z:{vector3.z}");
         }
     }
 }

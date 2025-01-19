@@ -1,76 +1,79 @@
-using Artmine15.Utils.Toolkit.Enums;
 using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Artmine15.Utils.Toolkit.Code
+namespace Artmine15.Packages.Utils.Toolkit.Code
 {
     public class Timer
     {
-        private float _timerTime;
+        private float _time;
         private float _mainTimer;
+        private float _mainTimerNormalizedBuffer;
 
         public event Action OnTimerEnded;
         public event Action OnTimerRepeated;
 
         private TimerType _currentTimerType;
-        private TimerState _currentTimerState;
+        private TimerGrowing _currentTimerGrowing;
+        private bool _isCurrentTimerActive;
 
         public void UpdateTimer(float deltaTime)
         {
-            if (_currentTimerState == TimerState.Stopped) return;
+            if (_isCurrentTimerActive == false) return;
 
-            switch (_currentTimerType)
+            if (_currentTimerGrowing == TimerGrowing.Decreasing)
             {
-                case TimerType.Common:
-                    if (_mainTimer <= 0)
-                    {
-                        StopTimer();
-                    }
-                    break;
-                case TimerType.Repeatable:
-                    if (_mainTimer <= 0)
+                if (_mainTimer > 0)
+                {
+                    _mainTimer -= deltaTime;
+                }
+                else if (_mainTimer <= 0)
+                {
+                    if (_currentTimerType == TimerType.Repeatable)
                     {
                         RepeatRepeatableTimer();
                     }
-                    break;
+                    else
+                    {
+                        Stop();
+                    }
+                }
             }
-
-            if(_mainTimer > 0)
-                _mainTimer -= deltaTime;
-        }
-
-        private void StartCommonTimer()
-        {
-            _mainTimer = _timerTime;
-
-            _currentTimerType = TimerType.Common;
-        }
-
-        private void StartRepeatableTimer()
-        {
-            if(_currentTimerType != TimerType.Repeatable)
+            else if(_currentTimerGrowing == TimerGrowing.Increasing)
             {
-                _mainTimer = _timerTime;
-                _currentTimerType = TimerType.Repeatable;
+                if (_mainTimer < _time)
+                {
+                    _mainTimer += deltaTime;
+                }
+                else if (_mainTimer >= _time)
+                {
+                    if (_currentTimerType == TimerType.Repeatable)
+                    {
+                        RepeatRepeatableTimer();
+                    }
+                    else
+                    {
+                        Stop();
+                    }
+                }
             }
+        }
+
+        private void SetTimer(float seconds)
+        {
+            _time = seconds;
+            if (_currentTimerGrowing == TimerGrowing.Decreasing)
+                _mainTimer = _time;
             else
-            {
-                throw new Exception("Repeatable timer is already running. To set a new value use RepeatRepeatableTimer()");
-            }
+                _mainTimer = 0;
         }
 
-        public IEnumerator StartCoroutineTimer(float seconds)
+        public void StartTimer(float seconds, TimerType type, TimerGrowing timerGrowing = TimerGrowing.Decreasing)
         {
-            _currentTimerType = TimerType.Coroutine;
-            yield return new WaitForSeconds(seconds);
-            OnTimerEnded?.Invoke();
-            yield break;
-        }
+            if (type == TimerType.None) return;
+            _currentTimerGrowing = timerGrowing;
+            SetTimer(seconds);
 
-        public void StartTimer(float seconds, TimerType type)
-        {
-            _timerTime = seconds;
             switch (type)
             {
                 case TimerType.Common:
@@ -82,52 +85,63 @@ namespace Artmine15.Utils.Toolkit.Code
                     StartRepeatableTimer();
                     break;
             }
-            _currentTimerState = TimerState.Active;
+            _isCurrentTimerActive = true;
         }
 
-        public void PauseTimer()
+        private void StartCommonTimer()
         {
-            _currentTimerState = TimerState.Stopped;
+            _currentTimerType = TimerType.Common;
         }
 
-        public void ResumeTimer()
+        private void StartRepeatableTimer()
         {
-            _currentTimerState = TimerState.Active;
+            if (_currentTimerType != TimerType.Repeatable)
+            {
+                _currentTimerType = TimerType.Repeatable;
+            }
+            else
+            {
+                throw new Exception("Repeatable timer is already running. To set a new value use RepeatRepeatableTimer()");
+            }
+        }
+
+        /// <summary>
+        /// Can be decreasing only. You can't get timer value.
+        /// </summary>
+        public IEnumerator StartCoroutineTimer(float seconds)
+        {
+            _currentTimerType = TimerType.Coroutine;
+            yield return new WaitForSeconds(seconds);
+            OnTimerEnded?.Invoke();
+            yield break;
         }
 
         public void RepeatRepeatableTimer()
         {
             if (_currentTimerType != TimerType.Repeatable) throw new Exception("RepeatRepeatableTimer() invokes not in the repeatable timer");
-            
-            if(_currentTimerState == TimerState.Active)
+
+            if (_isCurrentTimerActive == true)
             {
-                _mainTimer = _timerTime;
+                SetTimer(_time);
                 OnTimerRepeated?.Invoke();
             }
-
-            //switch (_currentTimerState)
-            //{
-            //    case TimerState.Active:
-            //        return;
-            //    case TimerState.Stopped:
-            //        _currentTimerType = ActiveTimerType.None;
-            //        return;
-            //}
         }
 
-        public void StopTimer()
+        public void Pause()
+        {
+            _isCurrentTimerActive = false;
+        }
+
+        public void Resume()
+        {
+            _isCurrentTimerActive = true;
+        }
+
+        public void Stop()
         {
             _currentTimerType = TimerType.None;
-            _currentTimerState = TimerState.Stopped;
+            _isCurrentTimerActive = false;
 
-            //if (_currentTimerType == ActiveTimerType.Repeatable)
-            //{
-            //    _currentTimerState = TimerState.Stopped;
-            //}
-            //else
-            //{
-                
-            //}
             _mainTimer = 0;
             OnTimerEnded?.Invoke();
         }
@@ -135,6 +149,11 @@ namespace Artmine15.Utils.Toolkit.Code
         public float GetTimerValue()
         {
             return _mainTimer;
+        }
+
+        public float GetTimerNormalizedValue()
+        {
+            return _mainTimer / _time;
         }
 
         public TimerType GetCurrentTimerType()

@@ -1,16 +1,21 @@
 using TriInspector;
-using Artmine15.Utils.Toolkit.Enums;
 using UnityEngine;
 
-namespace Artmine15.Utils.Toolkit.Components
+namespace Artmine15.Packages.Utils.Toolkit.Components
 {
+    [AddComponentMenu("Packages/Artmine15/Toolkit/Fps Handler")]
     public class FpsHandler : MonoBehaviour
     {
-        [DisableIf(nameof(_handlerEncapsulation), FpsHandlerEncapsulation.EditedByExternalClass)]
+        private const int _maxFps = 999;
+
+        [HideIf(nameof(_handlerEncapsulation), FpsHandlerEncapsulation.EditedByExternalClass)]
         [SerializeField] private FpsHandlerMode _handlerMode;
         private FpsHandlerEncapsulation _handlerEncapsulation;
-        [DisableIf(nameof(_handlerEncapsulation), FpsHandlerEncapsulation.EditedByExternalClass)]
-        [SerializeField, Range(-1, 999)] private int _defaultFps = 60;
+
+        [HideIf(nameof(_handlerEncapsulation), FpsHandlerEncapsulation.EditedByExternalClass)]
+        [HideIf(nameof(_handlerMode), FpsHandlerMode.ScreenRefreshRate)]
+        [HideIf(nameof(_handlerMode), FpsHandlerMode.Maximum)]
+        [SerializeField, Range(-1, _maxFps)] private int _defaultFps = 60;
         [ReadOnly]
         [SerializeField] private int _currentFps;
 
@@ -31,10 +36,13 @@ namespace Artmine15.Utils.Toolkit.Components
             switch (_handlerMode)
             {
                 case FpsHandlerMode.Manual:
-                    SetDefaultTargetFps();
+                    SetTargetFpsFromHandler(_defaultFps);
                     break;
                 case FpsHandlerMode.ScreenRefreshRate:
-                    SetRefreshRateBasedTargetFps();
+                    SetTargetFpsFromHandler((int)Screen.currentResolution.refreshRateRatio.value);
+                    break;
+                case FpsHandlerMode.Maximum:
+                    SetTargetFpsFromHandler(_maxFps);
                     break;
                 default:
                     break;
@@ -48,16 +56,9 @@ namespace Artmine15.Utils.Toolkit.Components
             _handlerEncapsulation = FpsHandlerEncapsulation.EditedByExternalClass;
         }
 
-        private void SetDefaultTargetFps()
+        private void SetTargetFpsFromHandler(int fps)
         {
-            _currentFps = _defaultFps;
-            Application.targetFrameRate = _currentFps;
-            _handlerEncapsulation = FpsHandlerEncapsulation.ControlledByHandler;
-        }
-
-        private void SetRefreshRateBasedTargetFps()
-        {
-            _currentFps = (int)Screen.currentResolution.refreshRateRatio.value;
+            _currentFps = fps;
             Application.targetFrameRate = _currentFps;
             _handlerEncapsulation = FpsHandlerEncapsulation.ControlledByHandler;
         }
