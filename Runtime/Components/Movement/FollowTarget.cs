@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Artmine15.Packages.Utils.Toolkit.Components
 {
-    [AddComponentMenu("Packages/Artmine15/Toolkit/Movement and Rotation/Movement To Target")]
-    public sealed class MovementToTarget : Movement
+    [AddComponentMenu("Packages/Artmine15/Toolkit/Movement and Rotation/Follow Target")]
+    public sealed class FollowTarget : Movement
     {
         [SerializeField] private Transform _target;
         [SerializeField] private MovementType _movementType;
