@@ -1,12 +1,15 @@
 using UnityEngine;
 
-namespace Artmine15.Packages.Utils.Toolkit.Code
+namespace Artmine15.Toolkit
 {
     public static class QuickDebug
     {
+        /// <summary>
+        /// Print: KEY: NUM, KEY: NUM... in the Unity console
+        /// </summary>
+        /// <param name="args"></param>
         public static void KeyNumLog(params object[] args)
         {
-            //Example: KEY: NUM
             if (args.Length < 2)
             {
                 Debug.LogError("Not enough parameters. Fill in minimum 2");

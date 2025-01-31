@@ -2,13 +2,12 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Artmine15.Packages.Utils.Toolkit.Code
+namespace Artmine15.Toolkit
 {
     public class Timer
     {
         private float _time;
         private float _mainTimer;
-        private float _mainTimerNormalizedBuffer;
 
         public event Action OnTimerEnded;
         public event Action OnTimerRepeated;

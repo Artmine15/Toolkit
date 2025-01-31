@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Artmine15.Packages.Utils.Toolkit.Components.Debug
+namespace Artmine15.Toolkit.Components
 {
     [AddComponentMenu("Packages/Artmine15/Toolkit/Time Scale Handler")]
     public class TimeScaleHandler : MonoBehaviour

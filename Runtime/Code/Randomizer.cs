@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Artmine15.Packages.Utils.Toolkit.Code
+namespace Artmine15.Toolkit
 {
     public static class Randomizer
     {

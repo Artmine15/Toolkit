@@ -1,6 +1,6 @@
 using System;
 
-namespace Artmine15.Packages.Utils.Toolkit
+namespace Artmine15.Toolkit
 {
     public enum TimerType { None, Common, Coroutine, Repeatable };
     public enum TimerGrowing { Increasing, Decreasing };
