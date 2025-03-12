@@ -1,6 +1,6 @@
 {
   "name": "com.artmine15.toolkit",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "displayName": "Toolkit",
   "keywords": [
     "Timer",
@@ -12,7 +12,6 @@
   },
   "description": "Toolkit for Unity.",
   "dependencies": {
-    "com.codewriter.triinspector": "",
     "com.artmine15.extensions": ""
   }
 }

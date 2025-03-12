@@ -1,4 +1,4 @@
-using TriInspector;
+//using TriInspector;
 using UnityEngine;
 
 namespace Artmine15.Toolkit.Components
@@ -8,15 +8,15 @@ namespace Artmine15.Toolkit.Components
     {
         private const int _maxFps = 999;
 
-        [HideIf(nameof(_handlerEncapsulation), FpsHandlerEncapsulation.EditedByExternalClass)]
+        //[HideIf(nameof(_handlerEncapsulation), FpsHandlerEncapsulation.EditedByExternalClass)]
         [SerializeField] private FpsHandlerMode _handlerMode;
         private FpsHandlerEncapsulation _handlerEncapsulation;
 
-        [HideIf(nameof(_handlerEncapsulation), FpsHandlerEncapsulation.EditedByExternalClass)]
-        [HideIf(nameof(_handlerMode), FpsHandlerMode.ScreenRefreshRate)]
-        [HideIf(nameof(_handlerMode), FpsHandlerMode.Maximum)]
+        //[HideIf(nameof(_handlerEncapsulation), FpsHandlerEncapsulation.EditedByExternalClass)]
+        //[HideIf(nameof(_handlerMode), FpsHandlerMode.ScreenRefreshRate)]
+        //[HideIf(nameof(_handlerMode), FpsHandlerMode.Maximum)]
         [SerializeField, Range(-1, _maxFps)] private int _defaultFps = 60;
-        [ReadOnly]
+        //[ReadOnly]
         [SerializeField] private int _currentFps;
 
         private void Awake()
