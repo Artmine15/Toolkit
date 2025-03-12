@@ -2,6 +2,7 @@
     "name": "com.artmine15.toolkit",
     "rootNamespace": "",
     "references": [
+        "GUID:324caed91501a9c47a04ebfd87b68794",
         "GUID:ea6c0f191605d49458e356452723dd30"
     ],
     "includePlatforms": [],
