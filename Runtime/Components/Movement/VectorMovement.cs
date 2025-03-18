@@ -1,11 +1,11 @@
-using Artmine15.Toolkit;
 using UnityEngine;
 
 namespace Artmine15.Toolkit.Components
 {
     [AddComponentMenu("Packages/Artmine15/Toolkit/Movement and Rotation/Vector Movement")]
-    public class VectorMovement : Movement
+    public class VectorMovement : MonoBehaviour
     {
+        [SerializeField] private float _speed;
         protected Vector3 Vector;
 
         private void Update()
@@ -13,9 +13,9 @@ namespace Artmine15.Toolkit.Components
             Move();
         }
 
-        protected override void Move()
+        public void Move()
         {
-            transform.position += Vector * CurrentSpeed * Time.deltaTime;
+            transform.position += Vector * _speed * Time.deltaTime;
         }
     }
 }

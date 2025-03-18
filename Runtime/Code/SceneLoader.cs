@@ -16,6 +16,9 @@ namespace Artmine15.Toolkit
 
         public static void ReloadScene()
         {
+            if (_isSceneLoading == true) return;
+            else DisableLoading();
+
             LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 

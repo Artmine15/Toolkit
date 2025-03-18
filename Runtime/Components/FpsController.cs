@@ -3,18 +3,18 @@ using UnityEngine;
 
 namespace Artmine15.Toolkit.Components
 {
-    [AddComponentMenu("Packages/Artmine15/Toolkit/Fps Handler")]
-    public class FpsHandler : MonoBehaviour
+    [AddComponentMenu("Packages/Artmine15/Toolkit/Fps Controller")]
+    public class FpsController : MonoBehaviour
     {
         private const int _maxFps = 999;
 
         [HideIf(nameof(_handlerEncapsulation), FpsHandlerEncapsulation.EditedByExternalClass)]
-        [SerializeField] private FpsHandlerMode _handlerMode;
+        [SerializeField] private FpsControllerMode _handlerMode;
         private FpsHandlerEncapsulation _handlerEncapsulation;
 
         [HideIf(nameof(_handlerEncapsulation), FpsHandlerEncapsulation.EditedByExternalClass)]
-        [HideIf(nameof(_handlerMode), FpsHandlerMode.ScreenRefreshRate)]
-        [HideIf(nameof(_handlerMode), FpsHandlerMode.Maximum)]
+        [HideIf(nameof(_handlerMode), FpsControllerMode.ScreenRefreshRate)]
+        [HideIf(nameof(_handlerMode), FpsControllerMode.Maximum)]
         [SerializeField, Range(-1, _maxFps)] private int _defaultFps = 60;
         [ReadOnly]
         [SerializeField] private int _currentFps;
@@ -35,13 +35,13 @@ namespace Artmine15.Toolkit.Components
 
             switch (_handlerMode)
             {
-                case FpsHandlerMode.Manual:
+                case FpsControllerMode.Manual:
                     SetTargetFpsFromHandler(_defaultFps);
                     break;
-                case FpsHandlerMode.ScreenRefreshRate:
+                case FpsControllerMode.ScreenRefreshRate:
                     SetTargetFpsFromHandler((int)Screen.currentResolution.refreshRateRatio.value);
                     break;
-                case FpsHandlerMode.Maximum:
+                case FpsControllerMode.Maximum:
                     SetTargetFpsFromHandler(_maxFps);
                     break;
                 default:
