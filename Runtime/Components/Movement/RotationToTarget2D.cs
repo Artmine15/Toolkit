@@ -5,30 +5,36 @@ using Artmine15.Extensions;
 namespace Artmine15.Toolkit.Components
 {
     [AddComponentMenu("Packages/Artmine15/Toolkit/Movement and Rotation/Rotation To Target 2D")]
-    public class RotationToTarget2D : Rotation
+    public class RotationToTarget2D : MonoBehaviour
     {
-        public void RotateObjectTo(Transform objectTransform, Transform target, RotationType overrideRotationType, float zRotationFactor = -90)
+        [SerializeField] private float _lerpTime;
+        [SerializeField] private Vector2 _rotationOffset;
+        [SerializeField] private RotationType _rotationType;
+        private Vector2 _direction;
+        private Quaternion _targetRotation;
+
+        public void RotateObjectTo(Transform rotatableTransform, Transform target, RotationType overrideRotationType, float zRotationFactor = -90)
         {
-            Direction = target.position - objectTransform.position + (Vector3)RotationOffset;
-            TargetRotation = transform.GetZAngleFromDirection(Direction, zRotationFactor);
+            _direction = target.position - rotatableTransform.position + (Vector3)_rotationOffset;
+            _targetRotation = transform.GetZAngleFromDirection(_direction, zRotationFactor);
 
             if (overrideRotationType == RotationType.UseDefault)
             {
-                if (RotationType == RotationType.UseDefault)
+                if (_rotationType == RotationType.UseDefault)
                     throw new Exception($"Rotation type must be selected on {name}");
             }
             else
             {
-                RotationType = overrideRotationType;
+                _rotationType = overrideRotationType;
             }
 
-            switch (RotationType)
+            switch (_rotationType)
             {
                 case RotationType.NoDelay:
-                    objectTransform.rotation = TargetRotation;
+                    rotatableTransform.rotation = _targetRotation;
                     break;
                 case RotationType.Lerp:
-                    objectTransform.rotation = Quaternion.Lerp(objectTransform.rotation, TargetRotation, LerpTime * Time.deltaTime);
+                    rotatableTransform.rotation = Quaternion.Lerp(rotatableTransform.rotation, _targetRotation, _lerpTime * Time.deltaTime);
                     break;
             }
         }
