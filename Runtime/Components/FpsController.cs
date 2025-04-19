@@ -9,7 +9,7 @@ namespace Artmine15.Toolkit.Components
         private const int _maxFps = 999;
 
         [HideIf(nameof(_handlerEncapsulation), FpsHandlerEncapsulation.EditedByExternalClass)]
-        [SerializeField] private FpsControllerMode _handlerMode;
+        [SerializeField] private FpsControllerMode _handlerMode = FpsControllerMode.ScreenRefreshRate;
         private FpsHandlerEncapsulation _handlerEncapsulation;
 
         [HideIf(nameof(_handlerEncapsulation), FpsHandlerEncapsulation.EditedByExternalClass)]
@@ -42,7 +42,7 @@ namespace Artmine15.Toolkit.Components
                     SetTargetFpsFromHandler((int)Screen.currentResolution.refreshRateRatio.value);
                     break;
                 case FpsControllerMode.Maximum:
-                    SetTargetFpsFromHandler(_maxFps);
+                    SetTargetFpsFromHandler(-1);
                     break;
                 default:
                     break;
