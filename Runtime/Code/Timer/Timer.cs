@@ -44,20 +44,17 @@ namespace Artmine15.Toolkit
 
         protected abstract void DoOnTimeLimitExceeded();
 
-        protected void SetTimeLimit(float seconds)
+        public void SetTimeLimit(float seconds)
         {
             TimeLimit = seconds;
-            if (Growing == TimerGrowing.Decreasing)
-                MainTimer = TimeLimit;
-            else
-                MainTimer = 0;
         }
 
         public void Start(float seconds, TimerGrowing timerGrowing = TimerGrowing.Decreasing)
         {
             Growing = timerGrowing;
             SetTimeLimit(seconds);
-            
+            Reset();
+
             IsActive = true;
         }
 
@@ -77,6 +74,14 @@ namespace Artmine15.Toolkit
 
             MainTimer = 0;
             OnEnded?.Invoke();
+        }
+
+        public void Reset()
+        {
+            if (Growing == TimerGrowing.Decreasing)
+                MainTimer = TimeLimit;
+            else
+                MainTimer = 0;
         }
 
         public float GetTime()
