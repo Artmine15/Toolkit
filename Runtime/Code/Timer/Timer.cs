@@ -71,8 +71,6 @@ namespace Artmine15.Toolkit
         public void Stop()
         {
             IsActive = false;
-
-            MainTimer = 0;
             OnEnded?.Invoke();
         }
 
@@ -84,14 +82,8 @@ namespace Artmine15.Toolkit
                 MainTimer = 0;
         }
 
-        public float GetTime()
-        {
-            return MainTimer;
-        }
+        public float GetTime() => MainTimer;
 
-        public float GetNormalizedTime()
-        {
-            return MainTimer / TimeLimit;
-        }
+        public float GetNormalizedTime() => MainTimer / TimeLimit;
     }
 }
